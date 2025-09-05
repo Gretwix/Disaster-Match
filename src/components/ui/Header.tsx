@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { ShoppingCartIcon } from "@heroicons/react/24/outline";
 
 interface CartItem {
-  id: string;
+  id: number;
   title: string;
   price: number;
   quantity: number;
@@ -15,20 +15,36 @@ interface HeaderProps {
 }
 
 export default function Header({ cartCount, cartItems, total }: HeaderProps) {
+  // Estado para controlar si el carrito (dropdown) está abierto o cerrado
   const [isCartOpen, setIsCartOpen] = useState(false);
+
+  // Referencia al contenedor del carrito en el DOM
+  // Se usa para detectar clics fuera de este contenedor
   const cartRef = useRef<HTMLDivElement>(null);
 
-  // (Opcional) Cerrar dropdown al hacer click fuera
+  /**
+   * useEffect → se ejecuta cuando cambia `isCartOpen`.
+   * Si el carrito está abierto, agrega un listener global para detectar clics fuera.
+   * Si el usuario hace clic fuera, se cierra automáticamente.
+   * Al desmontar o cerrar carrito, se limpia el listener.
+   */
   useEffect(() => {
+    // Función que maneja el clic fuera del carrito
     function handleClickOutside(e: MouseEvent) {
-      if (!cartRef.current) return;
+      if (!cartRef.current) return; // si la referencia aún no existe, salir
       if (!cartRef.current.contains(e.target as Node)) {
+        // si el clic no fue dentro del carrito, cerrarlo
         setIsCartOpen(false);
       }
     }
+
+    // Activar el listener solo cuando el carrito esté abierto
     if (isCartOpen) document.addEventListener("mousedown", handleClickOutside);
+
+    // Cleanup → quitar el listener al cerrar el carrito o desmontar el componente
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [isCartOpen]);
+
 
   return (
     <header className="bg-white shadow-sm">

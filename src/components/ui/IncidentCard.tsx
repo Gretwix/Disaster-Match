@@ -8,7 +8,7 @@ export type IncidentType = 'ROBBERY' | 'FIRE' | 'CRIME' | 'OTHER';
 // Definimos las props que debe recibir el componente.
 // Incluye datos del incidente y funciones para el manejo de carrito.
 export type IncidentCardProps = {
-  id: string;
+  id: number;
   type: IncidentType;
   title: string;
   location: string;

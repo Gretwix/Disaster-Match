@@ -1,3 +1,4 @@
+/* 
 import type { IncidentCardProps } from "../IncidentCard";
 
 export const mockIncidents: IncidentCardProps[] = [
@@ -146,3 +147,4 @@ export const mockIncidents: IncidentCardProps[] = [
   onRemoveFromCart: () => {},
 },
 ];
+*/

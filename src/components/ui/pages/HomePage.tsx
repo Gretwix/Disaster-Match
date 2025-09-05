@@ -215,7 +215,15 @@ export default function HomePage() {
                   className="px-6 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                   disabled={cart.length === 0}
                   onClick={() => {
-                    localStorage.setItem('purchasedIncidents', JSON.stringify(cart));
+                    const loggedUser = JSON.parse(localStorage.getItem("loggedUser") || "{}");
+                    if (!loggedUser?.username) {
+                      alert("No user logged in");
+                      return;
+                    }
+                    const key = `purchasedIncidents_${loggedUser.username}`;
+                    const prev = JSON.parse(localStorage.getItem(key) || "[]");
+                    const updated = [...prev, ...cart.filter(c => !prev.some((p: any) => p.id === c.id))];
+                    localStorage.setItem(key, JSON.stringify(updated));
                     alert(`Proceeding to checkout: $${total.toFixed(2)}`);
                   }}
                 >

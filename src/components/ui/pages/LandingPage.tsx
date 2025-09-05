@@ -35,7 +35,7 @@ const Banner = () => (
 		<div className="text-left py-8 pl-4">
 			<h1 className="text-[36px] font-semibold mb-6 mt-4">Real-Time incident reporting</h1>
 			<p className="text-gray-400 mb-6 text-2xl">Browse and get immediate access to verified reports of emergencies, crimes, and incidents in your area.</p>
-			<button className="mt-3 mb-4 px-4 py-1 bg-blue-700 text-white rounded-sm hover:bg-purple-700 transition">See Services</button>
+			{/*<button className="mt-3 mb-4 px-4 py-1 bg-blue-700 text-white rounded-sm hover:bg-purple-700 transition">See Services</button>*/}
 		</div>
 		<img src={MainIm} className="w-70 justify-self-end" alt="alt" />
 	</div>

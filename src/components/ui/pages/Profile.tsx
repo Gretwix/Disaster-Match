@@ -29,23 +29,25 @@ const Profile = () => {
 
   const fetchUser = async () => {
     try {
-      const res = await fetch(`${API_URL}/Search?pUsername=${loggedUser.username}`);
+      const res = await fetch(`${API_URL}/List`);
       const data = await res.json();
-
-      if (data.length > 0) {
-        const u = data[0];
-        const userData: User = {
-          ID: u.ID ?? u.id,
-          f_name: u.f_name,
-          l_name: u.l_name,
-          username: u.username,
-          email: u.email,
-          phone: u.phone,
-          company: u.company,
-          user_password: u.user_password || "*******",
-        };
-        setUser(userData);
-        setFormData(userData);
+      console.log("Backend response for user list:", data);
+      if (Array.isArray(data)) {
+        const u = data.find((u: any) => u.username === loggedUser.username);
+        if (u) {
+          const userData: User = {
+            ID: u.ID ?? u.id,
+            f_name: u.f_name,
+            l_name: u.l_name,
+            username: u.username,
+            email: u.email,
+            phone: u.phone,
+            company: u.company,
+            user_password: u.user_password || "*******",
+          };
+          setUser(userData);
+          setFormData(userData);
+        }
       }
     } catch (error) {
       console.error("Error fetching user", error);
@@ -105,9 +107,12 @@ const Profile = () => {
   // Obtener incidentes comprados
   const [purchasedIncidents, setPurchasedIncidents] = useState([]);
   useEffect(() => {
-    const stored = localStorage.getItem('purchasedIncidents');
+    if (!loggedUser?.username) return;
+    const key = `purchasedIncidents_${loggedUser.username}`;
+    const stored = localStorage.getItem(key);
     if (stored) setPurchasedIncidents(JSON.parse(stored));
-  }, []);
+    else setPurchasedIncidents([]);
+  }, [loggedUser?.username]);
 
   if (loading) return <p className="text-center mt-10">Loading profile...</p>;
 

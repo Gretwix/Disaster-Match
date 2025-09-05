@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
-import { Home, User, Users, Settings } from "lucide-react";
+import { Home, User, Users, Settings, Trash } from "lucide-react";
 
-// Tipado según lo que querés mostrar
 type UserRecord = {
   id: number;
   username: string;
@@ -12,20 +11,19 @@ export default function AdminUsers() {
   const [users, setUsers] = useState<UserRecord[]>([]);
   const [loading, setLoading] = useState(true);
 
-  // URL de la API
-  const API_URL = "https://localhost:7044/Users/List"; 
+  const API_URL = "https://localhost:7044/Users/List";
 
   useEffect(() => {
     const fetchUsers = async () => {
       try {
         const res = await fetch(API_URL);
         const data = await res.json();
+        console.log("Usuarios desde API:", data);
 
-        
         const mapped: UserRecord[] = data.map((u: any) => ({
-          id: u.id,
-          username: u.username,
-          email: u.email,
+          id: u.ID ?? u.id,
+          username: u.Username ?? u.username,
+          email: u.Email ?? u.email,
         }));
 
         setUsers(mapped);
@@ -39,12 +37,34 @@ export default function AdminUsers() {
     fetchUsers();
   }, []);
 
+  const handleDelete = async (id: number) => {
+  if (!confirm("¿Seguro que quieres eliminar este usuario?")) return;
+
+  try {
+    const res = await fetch(`https://localhost:7044/Users/Delete?pID=${id}`, {
+      method: "DELETE",
+    });
+
+    if (res.ok) {
+      setUsers((prev) => prev.filter((user) => user.id !== id));
+      alert("Usuario eliminado correctamente.");
+    } else {
+      const errorText = await res.text();
+      console.error("Error eliminando:", errorText);
+      alert("Error al eliminar usuario.");
+    }
+  } catch (err) {
+    console.error("Error en la petición:", err);
+    alert("Error al conectar con el servidor.");
+  }
+};
+
+
   return (
     <div className="min-h-screen bg-gray-100">
       <div className="mx-auto max-w-7xl p-4 md:p-6 lg:p-8">
         <div className="rounded-2xl bg-white shadow-sm border border-gray-200">
           <div className="grid grid-cols-1 md:grid-cols-[240px_1fr]">
-            
             {/* Sidebar */}
             <aside className="border-b md:border-b-0 md:border-r border-gray-200 p-5 md:p-6 bg-gray-50/60 rounded-t-2xl md:rounded-tr-none md:rounded-l-2xl">
               <nav className="space-y-2">
@@ -69,7 +89,9 @@ export default function AdminUsers() {
 
             {/* Main content */}
             <section className="p-6 md:p-8">
-              <h1 className="text-2xl font-semibold text-gray-900">Manage Users</h1>
+              <h1 className="text-2xl font-semibold text-gray-900">
+                Manage Users
+              </h1>
 
               <div className="mt-6 rounded-2xl border border-gray-200 bg-gray-50 p-4 sm:p-5">
                 <div className="overflow-x-auto">
@@ -82,14 +104,24 @@ export default function AdminUsers() {
                           <th className="w-16 px-4 py-3 font-semibold">ID</th>
                           <th className="px-4 py-3 font-semibold">Username</th>
                           <th className="px-4 py-3 font-semibold">Email</th>
+                          <th className="px-4 py-3 font-semibold">Actions</th>
                         </tr>
                       </thead>
                       <tbody className="bg-white rounded-xl overflow-hidden">
                         {users.map((u, idx) => (
-                          <tr key={u.id} className={idx % 2 === 0 ? "bg-white" : "bg-gray-50"}>
+                          <tr key={u.id ?? idx} className={idx % 2 === 0 ? "bg-white" : "bg-gray-50"}>
                             <td className="px-4 py-3 text-gray-900">{u.id}</td>
                             <td className="px-4 py-3 text-gray-900">{u.username}</td>
                             <td className="px-4 py-3 text-gray-900">{u.email}</td>
+                            <td className="px-4 py-3">
+                              <button
+                                onClick={() => handleDelete(u.id)}
+                                className="flex items-center gap-2 px-3 py-1 rounded-md bg-red-500 text-white hover:bg-red-600 transition"
+                              >
+                                <Trash className="h-4 w-4" />
+                                Delete
+                              </button>
+                            </td>
                           </tr>
                         ))}
                       </tbody>
@@ -98,7 +130,6 @@ export default function AdminUsers() {
                 </div>
               </div>
             </section>
-
           </div>
         </div>
       </div>

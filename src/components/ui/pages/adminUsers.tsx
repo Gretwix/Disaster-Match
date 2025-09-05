@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Home, User, Users, Settings } from "lucide-react";
 
 // Tipado según lo que querés mostrar
@@ -13,7 +13,7 @@ export default function AdminUsers() {
   const [loading, setLoading] = useState(true);
 
   // URL de la API
-  const API_URL = "https://localhost:7044/Users/List"; // ⚠️ Ajusta el puerto al de tu backend
+  const API_URL = "https://localhost:7044/Users/List"; 
 
   useEffect(() => {
     const fetchUsers = async () => {

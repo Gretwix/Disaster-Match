@@ -49,8 +49,8 @@ export default function Login() {
       } else {
         setMessageType("success");
         setMessage("Login exitoso");
-        // Redirigir al dashboard o home
-        navigate({ to: "/" });
+  // Redirigir al dashboard o home
+  navigate({ to: "/HomePage" });
       }
     } catch (err) {
       console.error(err);

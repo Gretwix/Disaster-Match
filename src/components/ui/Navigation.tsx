@@ -9,6 +9,10 @@ export default function Navigation(){
             <Link
                 to="/adminUsers"
                 className="text-lime-400">Admin Users</Link>
+
+            <Link
+            to="/Profile"
+            className="text-lime-400">Profile</Link>
         </nav>
     )
 }

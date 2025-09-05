@@ -1,5 +1,4 @@
 import { createFileRoute } from '@tanstack/react-router'
-
 import Login from "../components/ui/pages/Login";
 
 export const Route = createFileRoute('/')({
@@ -7,7 +6,5 @@ export const Route = createFileRoute('/')({
 })
 
 function RouteComponent() {
-  return (
-    <Login />
-  )
+  return <Login />;
 }

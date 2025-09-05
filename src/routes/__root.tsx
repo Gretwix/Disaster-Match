@@ -10,7 +10,7 @@ function RootComponent() {
   return (
     <React.Fragment>
       <Navigation />
-      <div className='pt-16'>
+      <div className='m-4'>
         <Outlet />
       </div>
       

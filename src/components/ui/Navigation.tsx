@@ -2,8 +2,13 @@ import {Link} from "@tanstack/react-router";
 
 export default function Navigation(){
     return(
-        <Link
-            to="/"
-            className="text-lime-400">Home</Link>
+        <nav>
+            <Link
+                to="/"
+                className="text-lime-400">Home</Link>
+            <Link
+                to="/adminUsers"
+                className="text-lime-400">Admin Users</Link>
+        </nav>
     )
 }

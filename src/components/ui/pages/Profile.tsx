@@ -101,6 +101,14 @@ const Profile = () => {
     }
   };
 
+
+  // Obtener incidentes comprados
+  const [purchasedIncidents, setPurchasedIncidents] = useState([]);
+  useEffect(() => {
+    const stored = localStorage.getItem('purchasedIncidents');
+    if (stored) setPurchasedIncidents(JSON.parse(stored));
+  }, []);
+
   if (loading) return <p className="text-center mt-10">Loading profile...</p>;
 
   return (
@@ -237,6 +245,22 @@ const Profile = () => {
                       </label>
                     </form>
                   )}
+
+                  {/* Lista de incidentes comprados */}
+                  <div className="mt-8">
+                    <h2 className="text-lg font-semibold mb-2">Purchased Incidents</h2>
+                    {purchasedIncidents.length === 0 ? (
+                      <p className="text-gray-500">No incidents purchased yet.</p>
+                    ) : (
+                      <ul className="list-disc pl-6">
+                        {purchasedIncidents.map((item: any) => (
+                          <li key={item.id} className="mb-2">
+                            <span className="font-medium">{item.title}</span> — ${item.price}
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </div>
                 </div>
               )}
             </section>

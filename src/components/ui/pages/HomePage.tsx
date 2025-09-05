@@ -214,9 +214,10 @@ export default function HomePage() {
                   type="button"
                   className="px-6 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                   disabled={cart.length === 0}
-                  onClick={() =>
-                    alert(`Proceeding to checkout: $${total.toFixed(2)}`)
-                  }
+                  onClick={() => {
+                    localStorage.setItem('purchasedIncidents', JSON.stringify(cart));
+                    alert(`Proceeding to checkout: $${total.toFixed(2)}`);
+                  }}
                 >
                   Proceed to Checkout
                 </button>
